@@ -1,10 +1,20 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
+use League\CommonMark\Extension\CommonMark\Node\Block\IndentedCode;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
 });
+
+Route::get('/books/create', [BookController::class, 'create']);
+Route::get('/books/{id}', [BookController::class, 'show']);
+Route::get('/books/{book}/edit', [BookController::class, 'edit']);
+Route::get('/books', [BookController::class, 'index']);
+
+Route::delete('/books', [BookController::class, 'index']);
+
 
 Route::middleware([
     'auth:sanctum',

@@ -17,6 +17,12 @@ class Book extends Model
         return $this->belongsTo(Publisher::class);
     }
 
+    public function setPublisher(string $name)
+    {
+        $publisher = Publisher::first(['name' => $name]);
+        $this->publisher_id = $publisher->id;
+    }
+
     public function author(string $name)
     {
         $author = Author::firstOrCreate(['name' => $name]);

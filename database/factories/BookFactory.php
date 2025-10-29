@@ -19,7 +19,7 @@ class BookFactory extends Factory
     {
         return [
             'publisher_id' => Publisher::factory(),
-            'name' => fake()->word(),
+            'title' => fake()->word(),
             'isbn' => fake()->isbn10(),
             'bibliography' => 'placeholder text',
             'cover' => fake()->imageUrl(),

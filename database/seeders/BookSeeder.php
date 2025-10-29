@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use app\models\Author;
-use app\models\Book;
+use App\models\Author;
+use App\models\Book;
 
 class BookSeeder extends Seeder
 {
