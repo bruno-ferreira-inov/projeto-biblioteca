@@ -42,7 +42,7 @@ class BookForm extends Component
     {
         //dd($this->title, $this->isbn, $this->price, $this->coverPath, $this->publisher_id, $this->bibliography);
         $this->validate();
-        $this->coverPath = $this->cover->store(path: 'BookCovers');
+        $this->coverPath = $this->cover->store(path: 'bookcovers');
 
         $book = Book::create([
             'title' => $this->title,
@@ -58,7 +58,7 @@ class BookForm extends Component
             $book->author($author->name);
         }
 
-        redirect('/landing');
+        redirect('/books');
     }
 
     public function render()

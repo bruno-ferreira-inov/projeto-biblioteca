@@ -1,5 +1,5 @@
 <x-layout>
-    <x-books.BookCard :$book>
+    <x-books.book-card-single :$book>
 
-    </x-books.BookCard>
+    </x-books.book-card-single>
 </x-layout>

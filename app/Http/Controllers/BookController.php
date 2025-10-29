@@ -15,7 +15,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
+        $books = Book::with('authors')->get();
 
         return view(
             'books.index',
@@ -36,7 +36,6 @@ class BookController extends Controller
      */
     public function store(StoreBookRequest $request)
     {
-
         $authors = [];
         foreach ($request->all() as $param => $text) {
             if (str_contains($param, "author")) {
@@ -81,14 +80,15 @@ class BookController extends Controller
         }
 
         redirect('/landing');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Book $book)
     {
-        $book = Book::find($id);
+
         //dd($book);
         return view('books.show', ['book' => $book]);
     }
@@ -112,8 +112,11 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
-        //
+
+        Book::findOrFail($id)->delete();
+
+        return redirect('/books');
     }
 }

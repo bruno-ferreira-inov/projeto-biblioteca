@@ -9,11 +9,11 @@ Route::get('/', function () {
 });
 
 Route::get('/books/create', [BookController::class, 'create']);
-Route::get('/books/{id}', [BookController::class, 'show']);
+Route::get('/books/{book}', [BookController::class, 'show']);
 Route::get('/books/{book}/edit', [BookController::class, 'edit']);
 Route::get('/books', [BookController::class, 'index']);
 
-Route::delete('/books', [BookController::class, 'index']);
+Route::delete('/books/{id}', [BookController::class, 'destroy']);
 
 
 Route::middleware([
