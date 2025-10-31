@@ -1,6 +1,6 @@
 @props(['book'])
 <!-- Single Book Card with Image on Left and Information on Right (Responsive) -->
-<div class="max-w-4xl mx-auto my-8 bg-gray-200 p-6 rounded-lg shadow-xl">
+<div class="max-w-4xl mx-auto my-8 bg-gray-500 p-6 rounded-lg shadow-xl">
     <div class="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-6">
         <!-- Book Cover (Image on the Left) -->
         <div class="flex-shrink-0">
@@ -33,7 +33,7 @@
             <!-- Back Button -->
             <div class="mt-6 justify-end">
                 <a href="/books{{ $book->id}}/edit" class="text-blue-500 hover:text-blue-700">Back to Books List</a>
-                <a href="/books" class="btn btn-active btn-warning">Edit</a>
+                <a href="/books/{{ $book->id }}/edit" class="btn btn-active btn-warning">Edit</a>
                 <button form="delete-form" class="btn btn-active btn-error">Delete</button>
 
             </div>

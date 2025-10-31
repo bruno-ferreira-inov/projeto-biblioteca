@@ -1,4 +1,4 @@
-<div class="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4 flex flex-col h-full">
+<div class="bg-gray-500 rounded-xl shadow-md hover:shadow-lg transition p-4 flex flex-col h-full">
     <!-- Cover image -->
     <img class="w-64 h-96 object-cover rounded-md" src="{{ asset('storage/' . $book->cover) }}" alt="Book Cover">
 
@@ -6,10 +6,10 @@
     <div class="flex flex-col flex-grow justify-between">
         <!-- Title and Author -->
         <div>
-            <h2 class="text-lg font-semibold text-gray-800 mb-1 line-clamp-2">
+            <h2 class="text-lg font-semibold text-white mb-1 line-clamp-2">
                 {{ $book->title }}
             </h2>
-            <p class="text-gray-600 text-lg">By: {{ implode(', ', $book->authors->pluck('name')->toArray()) }}</p>
+            <p class="text-white text-lg">By: {{ implode(', ', $book->authors->pluck('name')->toArray()) }}</p>
 
             <!-- Description -->
             <p class="text-gray-700 text-sm mb-4 line-clamp-3">

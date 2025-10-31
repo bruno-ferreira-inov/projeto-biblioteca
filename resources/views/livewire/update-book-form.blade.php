@@ -3,32 +3,18 @@
         @csrf
         <fieldset class="fieldset">
             <legend class="fieldset-legend text-white">Title</legend>
-            <input type="text" class="input" name="title" id="title" wire:model="title" placeholder="Title" />
-            @error('title')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{$message}}</strong>
-                </span>
-            @enderror
+            <input type="text" class="input" name="title" id="title" wire:model="title" placeholder="Title"
+                value="{{ $book->title }}" />
         </fieldset>
 
         <fieldset class="fieldset">
             <legend class="fieldset-legend text-white">ISBN</legend>
             <input type="text" class="input" name="isbn" id="isbn" wire:model="isbn" placeholder="ISBN" />
-            @error('isbn')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{$message}}</strong>
-                </span>
-            @enderror
         </fieldset>
 
         <fieldset class="fieldset">
             <legend class="fieldset-legend text-white">Price</legend>
             <input type="text" class="input" name="price" id="price" wire:model="price" placeholder="Price" />
-            @error('price')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{$message}}</strong>
-                </span>
-            @enderror
         </fieldset>
 
         <fieldset class="fieldset">
@@ -47,9 +33,22 @@
             <fieldset class="fieldset">
                 <legend class="fieldset-legend text-white">Authors</legend>
                 <select wire:model="authors" multiple class="select-neutral multi-author">
-                    <option disabled selected>Authors...</option>
+                    @foreach ($this->bookAuthors as $ba)
+                        <option selected value="{{ $ba->id }}"> {{ $ba->name }}</option>
+                    @endforeach
+
                     @foreach ($this->allAuthors as $a)
-                        <option value="{{ $a->id }}">{{ $a->name }}</option>
+                        {{ $checked = false }}
+                        @foreach($this->bookAuthors as $ba)
+                            @if ($a->id == $ba->id)
+                                {{ $checked = true }}
+                            @endif
+                        @endforeach
+                        @if($checked == false)
+                            <option value="{{ $a->id }}">
+                                {{ $a->name }}
+                            </option>
+                        @endif
                     @endforeach
                 </select>
             </fieldset>
@@ -60,7 +59,9 @@
             <select wire:model.live="publisher_id" class="select publisher-select">
                 <option selected>Publishers...</option>
                 @foreach ($this->allPublishers as $p)
-                    <option value="{{ $p->id }}">{{ $p->name }}</option>
+                    <option value="{{ $p->id }}">
+                        {{ $p->name }}
+                    </option>
                 @endforeach
             </select>
         </fieldset>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Publisher;
 use App\Http\Requests\StorePublisherRequest;
 use App\Http\Requests\UpdatePublisherRequest;
+use Illuminate\Validation\Rules\File;
 
 class PublisherController extends Controller
 {
@@ -13,7 +14,11 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        //
+        $publishers = Publisher::all();
+        return view(
+            'publishers.index',
+            ['publishers' => $publishers]
+        );
     }
 
     /**
@@ -21,7 +26,7 @@ class PublisherController extends Controller
      */
     public function create()
     {
-        //
+        return view('authors.create');
     }
 
     /**
@@ -29,7 +34,19 @@ class PublisherController extends Controller
      */
     public function store(StorePublisherRequest $request)
     {
-        //
+        $request->validate([
+            'name' => ['required'],
+            'logo' => ['required', File::types(['png', 'jpg', 'webp'])],
+        ]);
+
+        $logoPath = $request->logo->store('PublisherLogos');
+
+        Publisher::create([
+            'name' => request('name'),
+            'logo' => $logoPath
+        ]);
+
+        redirect('/publishers');
     }
 
     /**
@@ -37,7 +54,7 @@ class PublisherController extends Controller
      */
     public function show(Publisher $publisher)
     {
-        //
+        return view('publishers.show', ['publisher' => $publisher]);
     }
 
     /**
@@ -45,7 +62,7 @@ class PublisherController extends Controller
      */
     public function edit(Publisher $publisher)
     {
-        //
+        return view('publisher.edit', ['publisher' => $publisher]);
     }
 
     /**
@@ -59,8 +76,10 @@ class PublisherController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Publisher $publisher)
+    public function destroy($id)
     {
-        //
+        Publisher::findOrFail($id)->delete();
+
+        return redirect('/publishers');
     }
 }

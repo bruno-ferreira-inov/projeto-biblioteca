@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BooksExport;
 use App\Models\Book;
 use App\Models\Author;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use Illuminate\Validation\Rules\File;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BookController extends Controller
 {
@@ -29,6 +31,11 @@ class BookController extends Controller
     public function create()
     {
         return view('books.create');
+    }
+
+    public function export()
+    {
+        return Excel::download(new BooksExport, 'books.xlsx');
     }
 
     /**
@@ -96,9 +103,11 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Book $book)
+    public function edit($id)
     {
-        //
+        $book = Book::with('authors')->find($id);
+
+        return view('books.edit', ['book' => $book]);
     }
 
     /**

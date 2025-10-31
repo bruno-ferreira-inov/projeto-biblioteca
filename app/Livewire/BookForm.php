@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Publisher;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -28,7 +29,6 @@ class BookForm extends Component
     #[Validate('image|max:2048')] //2MB Max size image
     public $cover;
     public string $coverPath;
-
     public $allAuthors;
     public $allPublishers;
 

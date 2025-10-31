@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    @livewireStyles
 </head>
 
 <body class="min-h-screen bg-gray-700">
@@ -42,17 +45,34 @@
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
-                <li><a>Item 1</a></li>
                 <li>
                     <details>
-                        <summary>Parent</summary>
+                        <summary>Books</summary>
                         <ul class="p-2">
-                            <li><a>Submenu 1</a></li>
-                            <li><a>Submenu 2</a></li>
+                            <li><a href="/books/create">Create</a></li>
+                            <li><a href="/books">List</a></li>
+                            <li><a href="/books/export">Export Boooks</a></li>
                         </ul>
                     </details>
                 </li>
-                <li><a>Item 3</a></li>
+                <li>
+                    <details>
+                        <summary>Authors</summary>
+                        <ul class="p-2">
+                            <li><a href="/authors/create">Create</a></li>
+                            <li><a href="/authors">List</a></li>
+                        </ul>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>Publishers</summary>
+                        <ul class="p-2">
+                            <li><a href="/publishers/create">Create</a></li>
+                            <li><a href="/publishers">List</a></li>
+                        </ul>
+                    </details>
+                </li>
             </ul>
         </div>
         <div class="navbar-end">
@@ -84,6 +104,7 @@
     <main class="">
         {{  $slot }}
     </main>
+    @livewireScripts
 </body>
 
 </html>

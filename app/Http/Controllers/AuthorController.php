@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Author;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
+use Illuminate\Validation\Rules\File;
 
 class AuthorController extends Controller
 {
@@ -13,7 +14,11 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        $authors = Author::all();
+        return view(
+            'authors.index',
+            ['authors' => $authors]
+        );
     }
 
     /**
@@ -21,7 +26,7 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        //
+        return view('authors.create');
     }
 
     /**
@@ -29,7 +34,19 @@ class AuthorController extends Controller
      */
     public function store(StoreAuthorRequest $request)
     {
-        //
+        $request->validate([
+            'name' => ['required'],
+            'photo' => ['required', File::types(['png,', 'jpg', 'webp'])],
+        ]);
+
+        $photoPath = $request->photo->store('AuthorPhotos');
+
+        Author::create([
+            'name' => request('name'),
+            'photo' => $photoPath
+        ]);
+
+        redirect('/authors');
     }
 
     /**
@@ -37,7 +54,7 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        //
+        return view('authors.show', ['author' => $author]);
     }
 
     /**
@@ -59,8 +76,10 @@ class AuthorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Author $author)
+    public function destroy($id)
     {
-        //
+        Author::findOrFail($id)->delete();
+
+        return redirect('/authors');
     }
 }
