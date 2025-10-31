@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\BooksExport;
 use App\Models\Book;
 use App\Models\Author;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use Illuminate\Validation\Rules\File;
@@ -15,14 +16,24 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::with('authors')->get();
+        $query = Book::with('authors');
 
-        return view(
-            'books.index',
-            ['books' => $books]
-        );
+        if ($search = $request->input('search')) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('isbn', 'like', "%{$search}%")
+                ->orWhereHas('authors', fn($q) => $q->where('name', 'like', "%{$search}%"));
+        }
+
+        $sortField = $request->input('sort', 'title');
+        $sortDirection = $request->input('direction', 'asc');
+
+        $books = $query
+            ->orderByRaw("LOWER($sortField) $sortDirection")
+            ->paginate(9);
+
+        return view('books.index', compact('books', 'sortField', 'sortDirection', 'search'));
     }
 
     /**
@@ -86,7 +97,10 @@ class BookController extends Controller
             }
         }
 
-        redirect('/landing');
+        return redirect()->route('books.index', [
+            'sort' => 'title',
+            'direction' => 'asc'
+        ]);
 
     }
 
@@ -113,9 +127,43 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBookRequest $request, Book $book)
+    public function update(UpdateBookRequest $request, $id)
     {
-        //
+        $book = Book::find($id);
+
+        request()->validate([
+            'title' => ['required'],
+            'isbn' => ['required'],
+            'price' => ['required'],
+            'bibliography' => ['required'],
+            'publisher_id' => ['required'],
+            'authors' => ['nullable']
+        ]);
+
+        if (request('cover')) {
+            $coverPath = $request->cover->store('bookcovers');
+
+            $book->update([
+                'title' => $request->title,
+                'isbn' => $request->isbn,
+                'price' => $request->price,
+                'publisher_id' => $request->publisher_id,
+                'bibliography' => $request->bibliography,
+                'cover' => $coverPath,
+            ]);
+        } else {
+            $book->update([
+                'title' => $request->title,
+                'isbn' => $request->isbn,
+                'price' => $request->price,
+                'publisher_id' => $request->publisher_id,
+                'bibliography' => $request->bibliography,
+            ]);
+        }
+        // dd($book->authors);
+        $book->authors()->sync($request->authors ?? []);
+
+        return view('books.show', ['book' => $book]);
     }
 
     /**
@@ -123,7 +171,6 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-
         Book::findOrFail($id)->delete();
 
         return redirect('/books');

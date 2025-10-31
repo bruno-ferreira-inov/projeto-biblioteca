@@ -58,7 +58,15 @@ class BookForm extends Component
             $book->author($author->name);
         }
 
-        redirect('/books');
+        return redirect()->route('books.index', [
+            'sort' => 'title',
+            'direction' => 'asc',
+        ]);
+    }
+
+    public function getSelectedAuthorsProperty()
+    {
+        return $this->authors;
     }
 
     public function render()

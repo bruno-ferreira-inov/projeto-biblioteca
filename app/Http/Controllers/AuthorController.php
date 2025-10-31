@@ -14,7 +14,8 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
+        $authors = Author::all()->sortBy('name');
+        //dd($a);
         return view(
             'authors.index',
             ['authors' => $authors]
@@ -46,7 +47,12 @@ class AuthorController extends Controller
             'photo' => $photoPath
         ]);
 
-        redirect('/authors');
+        $authors = Author::all()->sortBy('name');
+        //dd($a);
+        return view(
+            'authors.index',
+            ['authors' => $authors]
+        );
     }
 
     /**
@@ -60,17 +66,41 @@ class AuthorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Author $author)
+    public function edit($id)
     {
-        //
+        $author = Author::find($id);
+        return view('authors.edit', ['author' => $author]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAuthorRequest $request, Author $author)
+    public function update(UpdateAuthorRequest $request, $id)
     {
-        //
+        $author = Author::find($id);
+        request()->validate([
+            'name' => ['required'],
+        ]);
+        // dump($author);
+        if (request('photo')) {
+            $photoPath = $request->photo->store('AuthorPhotos');
+
+            $author->update([
+                'name' => request('name'),
+                'photo' => $photoPath,
+            ]);
+        } else {
+            $author->update([
+                'name' => request('name'),
+            ]);
+        }
+
+        $authors = Author::all()->sortBy('name');
+        return view(
+            'authors.index',
+            ['authors' => $authors]
+        );
+
     }
 
     /**

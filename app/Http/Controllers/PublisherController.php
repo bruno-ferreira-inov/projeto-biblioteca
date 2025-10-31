@@ -14,7 +14,7 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        $publishers = Publisher::all();
+        $publishers = Publisher::all()->sortBy('name');
         return view(
             'publishers.index',
             ['publishers' => $publishers]
@@ -46,7 +46,11 @@ class PublisherController extends Controller
             'logo' => $logoPath
         ]);
 
-        redirect('/publishers');
+        $publishers = Publisher::all()->sortBy('name');
+        return view(
+            'publishers.index',
+            ['publishers' => $publishers]
+        );
     }
 
     /**
@@ -60,17 +64,40 @@ class PublisherController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Publisher $publisher)
+    public function edit($id)
     {
-        return view('publisher.edit', ['publisher' => $publisher]);
+        $publisher = Publisher::find($id);
+        return view('publishers.edit', ['publisher' => $publisher]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePublisherRequest $request, Publisher $publisher)
+    public function update(UpdatePublisherRequest $request, $id)
     {
-        //
+        $publisher = Publisher::find($id);
+        request()->validate([
+            'name' => ['required'],
+        ]);
+        // dump($author);
+        if (request('logo')) {
+            $logoPath = $request->logo->store('PublisherLogos');
+
+            $publisher->update([
+                'name' => request('name'),
+                'logo' => $logoPath,
+            ]);
+        } else {
+            $publisher->update([
+                'name' => request('name'),
+            ]);
+        }
+
+        $publishers = Publisher::all()->sortBy('name');
+        return view(
+            'publishers.index',
+            ['publishers' => $publishers]
+        );
     }
 
     /**

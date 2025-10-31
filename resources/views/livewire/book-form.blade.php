@@ -2,7 +2,7 @@
     <form wire:submit="save" class="text-black">
         @csrf
         <fieldset class="fieldset">
-            <legend class="fieldset-legend text-white">Title</legend>
+            <legend class="fieldset-legend ">Title</legend>
             <input type="text" class="input" name="title" id="title" wire:model="title" placeholder="Title" />
             @error('title')
                 <span class="invalid-feedback" role="alert">
@@ -12,7 +12,7 @@
         </fieldset>
 
         <fieldset class="fieldset">
-            <legend class="fieldset-legend text-white">ISBN</legend>
+            <legend class="fieldset-legend ">ISBN</legend>
             <input type="text" class="input" name="isbn" id="isbn" wire:model="isbn" placeholder="ISBN" />
             @error('isbn')
                 <span class="invalid-feedback" role="alert">
@@ -22,7 +22,7 @@
         </fieldset>
 
         <fieldset class="fieldset">
-            <legend class="fieldset-legend text-white">Price</legend>
+            <legend class="fieldset-legend ">Price</legend>
             <input type="text" class="input" name="price" id="price" wire:model="price" placeholder="Price" />
             @error('price')
                 <span class="invalid-feedback" role="alert">
@@ -32,20 +32,20 @@
         </fieldset>
 
         <fieldset class="fieldset">
-            <legend class="fieldset-legend text-white">Select the Book Cover</legend>
+            <legend class="fieldset-legend ">Select the Book Cover</legend>
             <input type="file" class="file-input" wire:model="cover" name="cover" id="cover" />
-            <label class="label text-white">Max size 2MB</label>
+            <label class="label ">Max size 2MB</label>
         </fieldset>
 
         <fieldset class="fieldset">
-            <legend class="fieldset-legend text-white">Bibliography</legend>
+            <legend class="fieldset-legend ">Bibliography</legend>
             <input type="text" class="input" name="bibliography" id="bibliography" wire:model="bibliography"
                 placeholder="Bibliography" />
         </fieldset>
 
         <div wire:ignore>
             <fieldset class="fieldset">
-                <legend class="fieldset-legend text-white">Authors</legend>
+                <legend class="fieldset-legend ">Authors</legend>
                 <select wire:model="authors" multiple class="select-neutral multi-author">
                     <option disabled selected>Authors...</option>
                     @foreach ($this->allAuthors as $a)
@@ -56,9 +56,9 @@
         </div>
 
         <fieldset class="fieldset">
-            <legend class="fieldset-legend text-white">Publishers</legend>
+            <legend class="fieldset-legend ">Publishers</legend>
             <select wire:model.live="publisher_id" class="select publisher-select">
-                <option selected>Publishers...</option>
+                <option disabled>Publishers...</option>
                 @foreach ($this->allPublishers as $p)
                     <option value="{{ $p->id }}">{{ $p->name }}</option>
                 @endforeach

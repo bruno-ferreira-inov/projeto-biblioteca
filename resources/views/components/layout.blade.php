@@ -16,9 +16,9 @@
     @livewireStyles
 </head>
 
-<body class="min-h-screen bg-gray-700">
+<body class="min-h-screen bg-[#EDF6F9]">
 
-    <div class="navbar bg-gray-400 shadow-sm">
+    <div class="navbar bg-[#006D77] text-[#EDF6F9] shadow-sm">
         <div class="navbar-start">
             <div class="dropdown">
                 <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
@@ -29,47 +29,73 @@
                     </svg>
                 </div>
                 <ul tabindex="-1"
-                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                    <li><a>Item 1</a></li>
-                    <li>
-                        <a>Parent</a>
-                        <ul class="p-2">
-                            <li><a>Submenu 1</a></li>
-                            <li><a>Submenu 2</a></li>
-                        </ul>
-                    </li>
-                    <li><a>Item 3</a></li>
+                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow ">
+                    <li><a class="text-[#006D77]">Item 1</a></li>
+
                 </ul>
             </div>
-            <a class="btn btn-ghost text-xl">daisyUI</a>
+            <a href='/' class="btn btn-ghost text-xl">biblioteca</a>
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
                 <li>
-                    <details>
-                        <summary>Books</summary>
-                        <ul class="p-2">
-                            <li><a href="/books/create">Create</a></li>
-                            <li><a href="/books">List</a></li>
-                            <li><a href="/books/export">Export Boooks</a></li>
+                    <details class="relative group">
+                        <summary
+                            class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
+                            Books
+                        </summary>
+
+                        <ul
+                            class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                            <li>
+                                <a href="/books/create"
+                                    class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
+                            </li>
+                            <li>
+                                <a href="/books" class="block px-4 py-2 hover:bg-gray-100">List</a>
+                            </li>
+                            <li>
+                                <a href="/books/export" class="block px-4 py-2 hover:bg-gray-100 rounded-b-md">Export
+                                    Books</a>
+                            </li>
                         </ul>
                     </details>
                 </li>
                 <li>
-                    <details>
-                        <summary>Authors</summary>
-                        <ul class="p-2">
-                            <li><a href="/authors/create">Create</a></li>
-                            <li><a href="/authors">List</a></li>
+                    <details class="relative group">
+                        <summary
+                            class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
+                            Authors
+                        </summary>
+
+                        <ul
+                            class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                            <li>
+                                <a href="/authors/create"
+                                    class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
+                            </li>
+                            <li>
+                                <a href="/authors" class="block px-4 py-2 hover:bg-gray-100">List</a>
+                            </li>
                         </ul>
                     </details>
                 </li>
                 <li>
-                    <details>
-                        <summary>Publishers</summary>
-                        <ul class="p-2">
-                            <li><a href="/publishers/create">Create</a></li>
-                            <li><a href="/publishers">List</a></li>
+                    <details class="relative group">
+                        <summary
+                            class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
+                            Publishers
+                        </summary>
+
+                        <ul
+                            class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                            <li>
+                                <a href="/publishers/create"
+                                    class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
+                            </li>
+                            <li>
+                                <a href="/publishers" class="block px-4 py-2 hover:bg-gray-100">List</a>
+                            </li>
                         </ul>
                     </details>
                 </li>
@@ -80,22 +106,23 @@
                 @auth
                     <form method='post' action="/logout">
                         @csrf
-                        <button>Logout</button>
+                        <li><button type="submit">Logout</button></li>
                     </form>
+                    <li>
+                        <details>
+                            <summary>{{Auth::user()->name}}</summary>
+                            <ul class="bg-base-100 rounded-t-none p-2">
+                                <li><a class="text-[#006D77]" href="{{ route('profile.show') }}">Profile</a></li>
+                            </ul>
+                        </details>
+
+                    </li>
                 @endauth
                 @guest
                     <li><a href="/register">Register</a></li>
                     <li><a href="/login">Log In</a></li>
                 @endguest
-                <li>
-                    <details>
-                        <summary>Parent</summary>
-                        <ul class="bg-base-100 rounded-t-none p-2">
-                            <li><a>Link 1</a></li>
-                            <li><a>Link 2</a></li>
-                        </ul>
-                    </details>
-                </li>
+
             </ul>
         </div>
     </div>

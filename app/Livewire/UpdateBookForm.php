@@ -9,12 +9,16 @@ use App\Models\Publisher;
 use Database\Seeders\AuthorSeeder;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class UpdateBookForm extends Component
 {
+    use WithFileUploads;
     public $authors = [];
     public $bookAuthors = [];
     public Book $book;
+
+    public $showDropdown = false;
 
     #[Validate('required')]
     public string $title;
@@ -40,18 +44,14 @@ class UpdateBookForm extends Component
         $this->allPublishers = Publisher::all();
         $this->bookAuthors = $book->authors;
 
-        dump($this->bookAuthors);
+        $this->authors = $book->authors->pluck('id')->toArray();
 
-        for ($i = 0; $i < count($this->bookAuthors); $i++) {
-            array_push($this->authors, $this->bookAuthors[$i]);
-        }
 
         // array_merge($this->authors, $this->bookAuthors);
         // dd($this->authors);
         $this->setBook($book);
         // dd($this->authors);
     }
-
     public function setBook(Book $book)
     {
         $this->book = $book;
@@ -65,7 +65,6 @@ class UpdateBookForm extends Component
 
     public function render()
     {
-        // dump($this->authors);
         return view('livewire.update-book-form');
     }
 }

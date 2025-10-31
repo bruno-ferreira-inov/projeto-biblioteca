@@ -1,9 +1,9 @@
 <x-layout>
-    <div class=" max-w-3xl ml-12 py-12 px-12 text-white">
+    <div class=" max-w-3xl ml-12 py-12 px-12 text-black">
         <!-- Model A Section -->
         <section class="mb-16">
             <h2 class="text-2xl font-semibold mb-4  flex items-center gap-2">
-                <span class="h-6 w-1  rounded-full"></span>
+                <span class="h-6 w-1 bg-indigo-500 rounded-full"></span>
                 Create Author
             </h2>
             <p class=" mb-6">
@@ -20,9 +20,10 @@
                 </div>
 
                 <div>
-                    <label for="pictureA" class="block text-sm font-medium mb-2 ">Picture</label>
-                    <input type="file" name="photo" id="photo" accept="image/*" required
-                        class=" text-sm  border border-gray-300 cursor-pointer text-black bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend ">Author Image</legend>
+                        <input class="file-input" type="file" name="photo" id="photo" accept="image/*" required />
+                    </fieldset>
                 </div>
 
                 <button type="submit"
@@ -40,10 +41,10 @@
         <!-- Model B Section -->
         <section>
             <h2 class="text-2xl font-semibold mb-4  flex items-center gap-2">
-                <span class="h-6 w-1 bg-emerald-500 rounded-full"></span>
+                <span class="h-6 w-1 bg-indigo-500 rounded-full"></span>
                 Create Publisher
             </h2>
-            <p class="text-white mb-6">
+            <p class=" mb-6">
                 Fill out the details below to create a new <strong>Publisher</strong>.
             </p>
 
@@ -57,13 +58,14 @@
                 </div>
 
                 <div>
-                    <label for="pictureB" class="block text-sm font-medium mb-2 text-gray-700">Picture</label>
-                    <input type="file" name="logo" id="logo" accept="image/*" required
-                        class="w-fit text-sm  border border-gray-300 cursor-pointer text-black bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend ">Publisher Logo</legend>
+                        <input class="file-input" type="file" name="logo" id="logo" accept="image/*" required />
+                    </fieldset>
                 </div>
 
                 <button type="submit"
-                    class="w-full py-2 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition">
+                    class="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition">
                     Create Publisher
                 </button>
             </form>
