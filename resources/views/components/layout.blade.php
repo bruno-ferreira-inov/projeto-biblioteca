@@ -39,65 +39,83 @@
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
                 <li>
-                    <details class="relative group">
-                        <summary
+                    @can('admin-access')
+                        <details class="relative group">
+                            <summary
+                                class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
+                                Books
+                            </summary>
+                            <ul
+                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                                <li>
+                                    <a href="/books/create"
+                                        class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
+                                </li>
+                                <li>
+                                    <a href="/books" class="block px-4 py-2 hover:bg-gray-100">List</a>
+                                </li>
+                                <li>
+                                    <a href="/books/export" class="block px-4 py-2 hover:bg-gray-100 rounded-b-md">Export
+                                        Books</a>
+                                </li>
+                            </ul>
+                        </details>
+                    @else
+                        <a href="/books"
                             class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
                             Books
-                        </summary>
-
-                        <ul
-                            class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
-                            <li>
-                                <a href="/books/create"
-                                    class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
-                            </li>
-                            <li>
-                                <a href="/books" class="block px-4 py-2 hover:bg-gray-100">List</a>
-                            </li>
-                            <li>
-                                <a href="/books/export" class="block px-4 py-2 hover:bg-gray-100 rounded-b-md">Export
-                                    Books</a>
-                            </li>
-                        </ul>
-                    </details>
+                        </a>
+                    @endcan
                 </li>
                 <li>
-                    <details class="relative group">
-                        <summary
+                    @can('admin-access')
+                        <details class="relative group">
+                            <summary
+                                class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
+                                Authors
+                            </summary>
+                            <ul
+                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                                <li>
+                                    <a href="/authors/create"
+                                        class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
+                                </li>
+                                <li>
+                                    <a href="/authors" class="block px-4 py-2 hover:bg-gray-100">List</a>
+                                </li>
+                            </ul>
+                        </details>
+                    @else
+                        <a href="/authors"
                             class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
                             Authors
-                        </summary>
-
-                        <ul
-                            class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
-                            <li>
-                                <a href="/authors/create"
-                                    class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
-                            </li>
-                            <li>
-                                <a href="/authors" class="block px-4 py-2 hover:bg-gray-100">List</a>
-                            </li>
-                        </ul>
-                    </details>
+                        </a>
+                    @endcan
                 </li>
                 <li>
-                    <details class="relative group">
-                        <summary
+                    @can('admin-access')
+                        <details class="relative group">
+                            <summary
+                                class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
+                                Publishers
+                            </summary>
+                            <ul
+                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                                <li>
+                                    <a href="/publishers/create"
+                                        class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
+                                </li>
+                                <li>
+                                    <a href="/publishers" class="block px-4 py-2 hover:bg-gray-100">List</a>
+                                </li>
+                            </ul>
+                        </details>
+                    @else
+                        <a href="/publishers"
                             class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
                             Publishers
-                        </summary>
-
-                        <ul
-                            class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
-                            <li>
-                                <a href="/publishers/create"
-                                    class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
-                            </li>
-                            <li>
-                                <a href="/publishers" class="block px-4 py-2 hover:bg-gray-100">List</a>
-                            </li>
-                        </ul>
-                    </details>
+                        </a>
+                    @endcan
                 </li>
             </ul>
         </div>

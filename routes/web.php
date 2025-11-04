@@ -10,31 +10,57 @@ Route::get('/', [BookController::class, 'index'])->name('books.index');
 
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
 
-Route::get('/books/create', [BookController::class, 'create']);
-Route::get('/books/export/', [BookController::class, 'export']);
-Route::get('/books/{book}', [BookController::class, 'show']);
-Route::get('/books/{book}/edit', [BookController::class, 'edit']);
-Route::patch('/books/{id}', [BookController::class, 'update']);
+Route::get('/books/create', [BookController::class, 'create'])
+    ->can('admin-access');
 
-Route::delete('/books/{id}', [BookController::class, 'destroy']);
+Route::get('/books/export/', [BookController::class, 'export'])
+    ->can('admin-access');
+
+Route::get('/books/{book}', [BookController::class, 'show']);
+Route::get('/books/{book}/edit', [BookController::class, 'edit'])
+    ->can('admin-access');
+
+Route::patch('/books/{id}', [BookController::class, 'update'])
+    ->can('admin-access');
+
+Route::delete('/books/{id}', [BookController::class, 'destroy'])
+    ->can('admin-access');
 
 Route::get('/authors', [AuthorController::class, 'index']);
-Route::get('/authors/create', [AuthorController::class, 'create']);
-Route::post('/authors', [AuthorController::class, 'store'])->middleware('auth');
-Route::get('/authors/{author}', [AuthorController::class, 'show']);
-Route::get('/authors/{author}/edit', [AuthorController::class, 'edit']);
-Route::patch('/authors/{id}', [AuthorController::class, 'update']);
+Route::get('/authors/create', [AuthorController::class, 'create'])
+    ->can('admin-access');
 
-Route::delete('/authors/{id}', [AuthorController::class, 'destroy']);
+Route::post('/authors', [AuthorController::class, 'store'])
+    ->middleware('auth')
+    ->can('admin-access');
+
+Route::get('/authors/{author}', [AuthorController::class, 'show']);
+Route::get('/authors/{author}/edit', [AuthorController::class, 'edit'])
+    ->can('admin-access');
+
+Route::patch('/authors/{id}', [AuthorController::class, 'update'])
+    ->can('admin-access');
+
+Route::delete('/authors/{id}', [AuthorController::class, 'destroy'])
+    ->can('admin-access');
 
 Route::get('/publishers', [PublisherController::class, 'index']);
-Route::get('/publishers/create', [PublisherController::class, 'create']);
-Route::post('publishers', [PublisherController::class, 'store'])->middleware('auth');
-Route::get('/publishers/{publisher}', [PublisherController::class, 'show']);
-Route::get('/publishers/{publisher}/edit', [PublisherController::class, 'edit']);
-Route::patch('/publishers/{id}', [PublisherController::class, 'update']);
+Route::get('/publishers/create', [PublisherController::class, 'create'])
+    ->can('admin-access');
 
-Route::delete('/publishers/{id}', [PublisherController::class, 'destroy']);
+Route::post('publishers', [PublisherController::class, 'store'])
+    ->middleware('auth')
+    ->can('admin-access');
+
+Route::get('/publishers/{publisher}', [PublisherController::class, 'show']);
+Route::get('/publishers/{publisher}/edit', [PublisherController::class, 'edit'])
+    ->can('admin-access');
+
+Route::patch('/publishers/{id}', [PublisherController::class, 'update'])
+    ->can('admin-access');
+
+Route::delete('/publishers/{id}', [PublisherController::class, 'destroy'])
+    ->can('admin-access');
 
 Route::middleware([
     'auth:sanctum',
