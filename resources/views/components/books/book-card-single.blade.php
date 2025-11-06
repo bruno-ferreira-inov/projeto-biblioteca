@@ -29,13 +29,25 @@
                 <p class="text-[#006d77]">{{ $book->bibliography }}</p>
 
             </div>
+            <div class="mt-4">
+                <h4 class="text-l font-semibold text-[#006d77]">Available Copies</h4>
+                <p class="text-[#006d77]">{{ $book->current_quantity }}/{{ $book->total_quantity }}</p>
+            </div>
 
             <!-- Back Button -->
 
             <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-start pt-22 ">
                 <a href="/books" class="btn btn-info">Back to Books List</a>
-                <a href="/books/{{ $book->id }}/edit" class="btn btn-active btn-warning">Edit</a>
-                <button form="delete-form" class="btn btn-active btn-error">Delete</button>
+                @if ($book->current_quantity > 0)
+                    <a href="/books/{{ $book->id }}/request" class="btn btn">Request</a>
+                @else
+                    <a href="/books/{{ $book->id }}/request" class="btn btn-disabled">Request</a>
+                @endif
+
+                @can('admin-access')
+                    <a href="/books/{{ $book->id }}/edit" class="btn btn-active btn-warning">Edit</a>
+                    <button form="delete-form" class="btn btn-active btn-error">Delete</button>
+                @endcan
 
             </div>
         </div>

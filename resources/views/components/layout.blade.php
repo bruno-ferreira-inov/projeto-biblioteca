@@ -55,6 +55,8 @@
                                     <a href="/books" class="block px-4 py-2 hover:bg-gray-100">List</a>
                                 </li>
                                 <li>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Requests</a>
+                                <li>
                                     <a href="/books/export" class="block px-4 py-2 hover:bg-gray-100 rounded-b-md">Export
                                         Books</a>
                                 </li>
@@ -122,16 +124,18 @@
         <div class="navbar-end">
             <ul class="menu menu-horizontal px-1">
                 @auth
-                    <form method='post' action="/logout">
-                        @csrf
-                        <li><button type="submit">Logout</button></li>
-                    </form>
+
                     <li>
                         <details>
                             <summary>{{Auth::user()->name}}</summary>
                             <ul class="bg-base-100 rounded-t-none p-2">
                                 <li><a class="text-[#006D77]" href="{{ route('profile.show') }}">Profile</a></li>
+                                <form method='post' action="/logout">
+                                    @csrf
+                                    <li><button class="text-[#006D77]" type="submit">Logout</button></li>
+                                </form>
                             </ul>
+
                         </details>
 
                     </li>

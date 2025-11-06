@@ -1,53 +1,60 @@
-<div class="flex items-center pl-10">
-    <form wire:submit="save" class="text-black">
+<div class="flex justify-center items-start min-h-screen bg-base-200 py-10">
+    <form wire:submit="save" enctype="multipart/form-data"
+        class="card w-full max-w-2xl bg-base-100 shadow-xl p-8 space-y-6 text-base-content">
         @csrf
-        <fieldset class="fieldset">
-            <legend class="fieldset-legend ">Title</legend>
-            <input type="text" class="input" name="title" id="title" wire:model="title" placeholder="Title" />
+        <h2 class="text-2xl font-semibold text-center mb-6">Register Book</h2>
+
+        <!-- Title -->
+        <fieldset class="fieldset space-y-2">
+            <legend class="fieldset-legend text-lg font-medium text-[#005f67]">Title</legend>
+            <input type="text" class="input input-bordered w-full" name="title" id="title" wire:model="title"
+                placeholder="Title" />
             @error('title')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{$message}}</strong>
-                </span>
+                <p class="text-error text-sm mt-1">{{ $message }}</p>
             @enderror
         </fieldset>
 
-        <fieldset class="fieldset">
-            <legend class="fieldset-legend ">ISBN</legend>
-            <input type="text" class="input" name="isbn" id="isbn" wire:model="isbn" placeholder="ISBN" />
+        <!-- ISBN -->
+        <fieldset class="fieldset space-y-2">
+            <legend class="fieldset-legend text-lg font-medium text-[#005f67]">ISBN</legend>
+            <input type="text" class="input input-bordered w-full" name="isbn" id="isbn" wire:model="isbn"
+                placeholder="ISBN" />
             @error('isbn')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{$message}}</strong>
-                </span>
+                <p class="text-error text-sm mt-1">{{ $message }}</p>
             @enderror
         </fieldset>
 
-        <fieldset class="fieldset">
-            <legend class="fieldset-legend ">Price</legend>
-            <input type="text" class="input" name="price" id="price" wire:model="price" placeholder="Price" />
+        <!-- Price -->
+        <fieldset class="fieldset space-y-2">
+            <legend class="fieldset-legend text-lg font-medium text-[#005f67]">Price</legend>
+            <input type="text" class="input input-bordered w-full" name="price" id="price" wire:model="price"
+                placeholder="Price" />
             @error('price')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{$message}}</strong>
-                </span>
+                <p class="text-error text-sm mt-1">{{ $message }}</p>
             @enderror
         </fieldset>
 
-        <fieldset class="fieldset">
-            <legend class="fieldset-legend ">Select the Book Cover</legend>
-            <input type="file" class="file-input" wire:model="cover" name="cover" id="cover" />
-            <label class="label ">Max size 2MB</label>
+        <!-- Cover -->
+        <fieldset class="fieldset space-y-2">
+            <legend class="fieldset-legend text-lg font-medium text-[#005f67]">Select the Book Cover</legend>
+            <input type="file" class="file-input file-input-bordered w-full" wire:model="cover" name="cover"
+                id="cover" />
+            <label class="label text-sm text-neutral">Max size 2MB</label>
         </fieldset>
 
-        <fieldset class="fieldset">
-            <legend class="fieldset-legend ">Bibliography</legend>
-            <input type="text" class="input" name="bibliography" id="bibliography" wire:model="bibliography"
-                placeholder="Bibliography" />
+        <!-- Bibliography -->
+        <fieldset class="fieldset space-y-2">
+            <legend class="fieldset-legend text-lg font-medium text-[#005f67]">Bibliography</legend>
+            <input type="text" class="input input-bordered w-full" name="bibliography" id="bibliography"
+                wire:model="bibliography" placeholder="Bibliography" />
         </fieldset>
 
+        <!-- Authors -->
         <div wire:ignore>
-            <fieldset class="fieldset">
-                <legend class="fieldset-legend ">Authors</legend>
-                <select wire:model="authors" multiple class="select-neutral multi-author">
-                    <option disabled selected>Authors...</option>
+            <fieldset class="fieldset space-y-2">
+                <legend class="fieldset-legend text-lg font-medium text-[#005f67]">Authors</legend>
+                <select wire:model="authors" multiple class="select select-bordered multi-author w-full h-32">
+                    <option disabled>Authors...</option>
                     @foreach ($this->allAuthors as $a)
                         <option value="{{ $a->id }}">{{ $a->name }}</option>
                     @endforeach
@@ -55,16 +62,27 @@
             </fieldset>
         </div>
 
-        <fieldset class="fieldset">
-            <legend class="fieldset-legend ">Publishers</legend>
-            <select wire:model.live="publisher_id" class="select publisher-select">
-                <option disabled>Publishers...</option>
+        <!-- Publisher -->
+        <fieldset class="fieldset space-y-2">
+            <legend class="fieldset-legend text-lg font-medium text-[#005f67]">Publishers</legend>
+            <select wire:model.live="publisher_id" class="select select-bordered w-full">
+                <option>Publishers...</option>
                 @foreach ($this->allPublishers as $p)
                     <option value="{{ $p->id }}">{{ $p->name }}</option>
                 @endforeach
             </select>
         </fieldset>
-        <button type="submit" class="btn btn-success"> Submit </button>
+
+        <!-- Quantity -->
+        <fieldset class="fieldset space-y-2">
+            <legend class="fieldset-legend text-lg font-medium text-[#005f67]">Available Copies</legend>
+            <input wire:model="quantity" type="number" class="input input-bordered w-full" placeholder="Quantity" />
+        </fieldset>
+
+        <!-- Submit -->
+        <div class="flex justify-end pt-4">
+            <button type="submit" class="btn btn-success px-6">Submit</button>
+        </div>
     </form>
 </div>
 

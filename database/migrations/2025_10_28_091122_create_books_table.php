@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->string('bibliography');
             $table->string('cover');
             $table->string('price');
+            $table->integer('total_quantity');
+            $table->integer('current_quantity');
             $table->timestamps();
         });
     }

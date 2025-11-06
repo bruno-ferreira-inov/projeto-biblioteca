@@ -31,6 +31,9 @@ class UpdateBookForm extends Component
     #[Validate('required')]
     public $bibliography;
 
+    #[Validate('required')]
+    public $quantity;
+
     #[Validate('image|max:2048')] //2MB Max size image
     public $cover;
     public string $coverPath;
@@ -61,6 +64,7 @@ class UpdateBookForm extends Component
         $this->publisher_id = $book->publisher_id;
         $this->bibliography = $book->bibliography;
         $this->cover = $book->coverPath;
+        $this->quantity = $book->current_quantity;
     }
 
     public function render()

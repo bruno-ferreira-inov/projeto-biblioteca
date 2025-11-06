@@ -25,7 +25,8 @@ class BookForm extends Component
     public $publisher_id;
     #[Validate('required')]
     public $bibliography;
-
+    #[Validate('required')]
+    public $quantity;
     #[Validate('image|max:2048')] //2MB Max size image
     public $cover;
     public string $coverPath;
@@ -51,6 +52,8 @@ class BookForm extends Component
             'cover' => $this->coverPath,
             'publisher_id' => $this->publisher_id,
             'bibliography' => $this->bibliography,
+            'total_quantity' => $this->quantity,
+            'current_quantity' => $this->quantity,
         ]);
 
         foreach ($this->authors as $pos => $value) {

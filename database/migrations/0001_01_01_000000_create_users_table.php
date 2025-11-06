@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->string('role')->default('Regular');
+            $table->integer('availableRequests')->default(3);
             $table->timestamps();
         });
 

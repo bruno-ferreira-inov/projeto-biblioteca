@@ -17,13 +17,17 @@ class BookFactory extends Factory
      */
     public function definition(): array
     {
+        $quantity = fake()->randomNumber(1);
+
         return [
             'publisher_id' => Publisher::factory(),
-            'title' => fake()->word(),
-            'isbn' => fake()->isbn10(),
+            'title' => fake()->unique()->word(),
+            'isbn' => fake()->unique()->isbn13(),
             'bibliography' => 'placeholder text',
             'cover' => fake()->imageUrl(),
             'price' => fake()->randomFloat(2, 7.50, 35.75),
+            'total_quantity' => $quantity,
+            'current_quantity' => $quantity,
         ];
     }
 }

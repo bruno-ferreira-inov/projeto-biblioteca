@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Exports\BooksExport;
+use App\Mail\BookRequestMade;
 use App\Models\Book;
 use App\Models\Author;
+use App\Models\User;
+use App\Models\BookRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\File;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class BookController extends Controller
 {
@@ -137,9 +143,10 @@ class BookController extends Controller
             'price' => ['required'],
             'bibliography' => ['required'],
             'publisher_id' => ['required'],
-            'authors' => ['nullable']
+            'authors' => ['nullable'],
+            'quantity' => ['required'],
         ]);
-
+        $quantityOffset = $book->total_quantity - $book->current_quantity;
         if (request('cover')) {
             $coverPath = $request->cover->store('bookcovers');
 
@@ -150,6 +157,8 @@ class BookController extends Controller
                 'publisher_id' => $request->publisher_id,
                 'bibliography' => $request->bibliography,
                 'cover' => $coverPath,
+                'total_quantity' => $request->quantity,
+                'current_quantity' => $book->current_quantity++,
             ]);
         } else {
             $book->update([
@@ -158,6 +167,8 @@ class BookController extends Controller
                 'price' => $request->price,
                 'publisher_id' => $request->publisher_id,
                 'bibliography' => $request->bibliography,
+                'total_quantity' => $request->quantity,
+                'current_quantity' => $request->quantity - $quantityOffset,
             ]);
         }
         // dd($book->authors);
@@ -174,5 +185,36 @@ class BookController extends Controller
         Book::findOrFail($id)->delete();
 
         return redirect('/books');
+    }
+
+    public function request($id)
+    {
+        $book = Book::findOrFail($id);
+
+        return view('books.request', ['book' => $book]);
+    }
+
+    public function storeRequest(Request $request)
+    {
+        // dd($request->bookId);
+        $user = $request->user();
+        $book = Book::findOrFail($request->bookId);
+
+        $bookrequest = new BookRequest([
+            'book_id' => $book->id,
+            'user_id' => $user->id,
+            'requestDate' => Carbon::today(),
+            'requestEndDate' => Carbon::today()->addDays(5),
+        ]);
+        $book->current_quantity--;
+        $book->save();
+
+        $user->availableRequests--;
+        $user->save();
+
+        Mail::to(Auth::user())->send(
+            new BookRequestMade($bookrequest)
+        );
+        dd([$bookrequest, $user, $book]);
     }
 }
