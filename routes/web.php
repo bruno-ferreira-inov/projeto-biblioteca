@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\PublisherController;
@@ -27,6 +28,9 @@ Route::get('/books/export/', [BookController::class, 'export'])
 
 Route::get('/books/{id}/request', [BookController::class, 'request']);
 Route::post('/books/{id}/request', [BookController::class, 'storeRequest']);
+Route::get('/books/requests/{req}', [BookController::class, 'showRequest'])->name('showBookRequest');
+
+Route::post('/books/requests/{bookRequest}', [BookController::class, 'completeRequest'])->name('completeRequest');
 
 Route::get('/books/{book}', [BookController::class, 'show']);
 Route::get('/books/{book}/edit', [BookController::class, 'edit'])
@@ -38,7 +42,19 @@ Route::patch('/books/{id}', [BookController::class, 'update'])
 Route::delete('/books/{id}', [BookController::class, 'destroy'])
     ->can('admin-access');
 
-
+//# -- Admin --
+Route::get('/admin', [AdminController::class, 'index'])
+    ->can('admin-access');
+Route::get('/admin/create', [AdminController::class, 'create'])
+    ->can('admin-access');
+Route::post('/admin', [AdminController::class, 'store'])
+    ->can('admin-access');
+Route::get('/admin/requests', [AdminController::class, 'requests'])
+    ->can('admin-access');
+Route::get('/admin/{admin}', [AdminController::class, 'show'])
+    ->can('admin-access');
+Route::delete('/admin/{id}', [AdminController::class, 'destroy'])
+    ->can('admin-access');
 
 //# -- Authors --
 Route::get('/authors', [AuthorController::class, 'index']);

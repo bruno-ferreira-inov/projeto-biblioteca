@@ -1,5 +1,8 @@
 @props(['book'])
 <!-- Single Book Card with Image on Left and Information on Right (Responsive) -->
+@php
+    dump(Auth::user()->availableRequests)
+ @endphp
 <div class="max-w-4xl mx-auto my-8 bg-[#EDF6F9] p-6 rounded-lg shadow-xl flex flex-col">
     <div class="flex flex-col lg:flex-row items-center lg:items-start flex-grow space-y-6 lg:space-y-0 lg:space-x-6">
         <!-- Book Cover (Image on the Left) -->
@@ -38,7 +41,7 @@
 
             <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-start pt-22 ">
                 <a href="/books" class="btn btn-info">Back to Books List</a>
-                @if ($book->current_quantity > 0)
+                @if ($book->current_quantity > 0 && Auth::user()->availableRequests > 0)
                     <a href="/books/{{ $book->id }}/request" class="btn btn">Request</a>
                 @else
                     <a href="/books/{{ $book->id }}/request" class="btn btn-disabled">Request</a>

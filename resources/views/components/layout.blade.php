@@ -55,7 +55,7 @@
                                     <a href="/books" class="block px-4 py-2 hover:bg-gray-100">List</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Requests</a>
+                                    <a href="/admin/requests" class="block px-4 py-2 hover:bg-gray-100">Requests</a>
                                 <li>
                                     <a href="/books/export" class="block px-4 py-2 hover:bg-gray-100 rounded-b-md">Export
                                         Books</a>

@@ -21,10 +21,16 @@ class BookRequestMade extends Mailable
      */
     // public $book = Book::find($this->bookrequest->book_id);
     // public $user = User::find($this->bookrequest->user_id);
+    public BookRequest $bookRequest;
+    public Book $book;
+    public User $user;
+
 
     public function __construct(public BookRequest $bookrequest)
     {
-
+        $this->bookRequest = $bookrequest;
+        $this->book = Book::find($this->bookRequest->book_id);
+        $this->user = User::find($this->bookRequest->user_id);
     }
 
     /**
@@ -48,8 +54,8 @@ class BookRequestMade extends Mailable
         return new Content(
             view: 'mail.book-request-made',
             with: [
-                'book' => Book::find($this->bookrequest->book_id),
-                'user' => User::find($this->bookrequest->user_id),
+                'book' => $this->book,
+                'user' => $this->user,
             ]
         );
     }

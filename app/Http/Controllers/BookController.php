@@ -200,7 +200,7 @@ class BookController extends Controller
         $user = $request->user();
         $book = Book::findOrFail($request->bookId);
 
-        $bookrequest = new BookRequest([
+        $bookrequest = BookRequest::create([
             'book_id' => $book->id,
             'user_id' => $user->id,
             'requestDate' => Carbon::today(),
@@ -216,5 +216,33 @@ class BookController extends Controller
             new BookRequestMade($bookrequest)
         );
         dd([$bookrequest, $user, $book]);
+    }
+
+    public function showRequest($id)
+    {
+        $bookRequest = BookRequest::with(['book', 'user'])
+            ->find($id);
+        // dd($bookRequest);
+        return view(
+            'books.showRequest',
+            ['bookRequest' => $bookRequest]
+        );
+    }
+
+    public function completeRequest(BookRequest $bookRequest)
+    {
+        if ($bookRequest->completed) {
+            return redirect()->back()->with('info', 'This request has already been completed');
+        }
+
+        $bookRequest->update([
+            'completed' => true,
+            'returnedDate' => Carbon::now(),
+        ]);
+
+        $bookRequest->book->increment('current_quantity');
+        $bookRequest->user->increment('availableRequests');
+
+        return redirect('/admin/requests');
     }
 }
