@@ -2,12 +2,14 @@
 
 namespace App\Mail;
 
+use AddressInfo;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\BookRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -25,12 +27,16 @@ class BookRequestMade extends Mailable
     public Book $book;
     public User $user;
 
+    public $admins;
+    public $addresses;
+
 
     public function __construct(public BookRequest $bookrequest)
     {
         $this->bookRequest = $bookrequest;
         $this->book = Book::find($this->bookRequest->book_id);
         $this->user = User::find($this->bookRequest->user_id);
+        $this->admins = User::where('role', 'Admin');
     }
 
     /**
@@ -38,8 +44,6 @@ class BookRequestMade extends Mailable
      */
     public function envelope(): Envelope
     {
-
-
         return new Envelope(
             subject: 'Book Request Made',
             from: 'admin@biblio.com',

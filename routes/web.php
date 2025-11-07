@@ -27,7 +27,11 @@ Route::get('/books/export/', [BookController::class, 'export'])
     ->can('admin-access');
 
 Route::get('/books/{id}/request', [BookController::class, 'request']);
+
 Route::post('/books/{id}/request', [BookController::class, 'storeRequest']);
+
+Route::get('/books/requests', [BookController::class, 'userRequests'])->name('user-requests');
+
 Route::get('/books/requests/{req}', [BookController::class, 'showRequest'])->name('showBookRequest');
 
 Route::post('/books/requests/{bookRequest}', [BookController::class, 'completeRequest'])->name('completeRequest');

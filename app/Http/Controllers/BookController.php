@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
+use Psy\Command\WhereamiCommand;
 
 class BookController extends Controller
 {
@@ -115,8 +116,8 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
+        $book = Book::with(['authors', 'bookRequests.user'])->findOrFail($book->id);
 
-        //dd($book);
         return view('books.show', ['book' => $book]);
     }
 
@@ -203,8 +204,8 @@ class BookController extends Controller
         $bookrequest = BookRequest::create([
             'book_id' => $book->id,
             'user_id' => $user->id,
-            'requestDate' => Carbon::today(),
-            'requestEndDate' => Carbon::today()->addDays(5),
+            'requestDate' => Carbon::today()->format('Y-m-d'),
+            'requestEndDate' => Carbon::today()->addDays(5)->format('Y-m-d'),
         ]);
         $book->current_quantity--;
         $book->save();
@@ -212,10 +213,13 @@ class BookController extends Controller
         $user->availableRequests--;
         $user->save();
 
-        Mail::to(Auth::user())->send(
-            new BookRequestMade($bookrequest)
-        );
-        dd([$bookrequest, $user, $book]);
+        Mail::to(Auth::user())
+            ->cc(User::where('role', 'Admin')->pluck('email'))
+            ->send(
+                new BookRequestMade($bookrequest)
+            );
+
+        return view('books.show', ['book' => $book]);
     }
 
     public function showRequest($id)
@@ -244,5 +248,27 @@ class BookController extends Controller
         $bookRequest->user->increment('availableRequests');
 
         return redirect('/admin/requests');
+    }
+
+    public function userRequests()
+    {
+        $query = BookRequest::with(['book', 'user'])
+            ->where('user_id', Auth::user()->id);
+
+        $ongoingRequests = (clone $query)
+            ->where('completed', false)
+            ->orderByDesc('requestEndDate')
+            ->get();
+
+        $completedRequests = (clone $query)
+            ->where('completed', true)
+            ->orderByDesc('returnedDate')
+            ->get();
+
+        //dd($ongoingRequests);
+        return view('books.user-requests', compact(
+            'ongoingRequests',
+            'completedRequests'
+        ));
     }
 }

@@ -1,9 +1,13 @@
 <x-layout>
     <div class="max-w-4xl mx-auto px-6 py-8">
 
-        <a href="" class="text-[#006D77] hover:underline">&larr; Back to
-            Requests</a>
-
+        @can('admin-access')
+            <a href="/admin/requests" class="text-[#006D77] hover:underline">&larr; Back to
+                Requests</a>
+        @else
+            <a href="/books/requests" class="text-[#006D77] hover:underline">&larr; Back to
+                Requests</a>
+        @endcan
         <div class="bg-white rounded-xl shadow-md border p-6 mt-4">
             <h1 class="text-2xl font-bold text-[#006D77] mb-4">
                 Request #{{ $bookRequest->id }}

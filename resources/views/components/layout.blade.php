@@ -38,6 +38,29 @@
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
+                @can('admin-access')
+                    <li>
+                        <details class="relative group">
+                            <summary
+                                class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
+                                Admin
+                            </summary>
+                            <ul
+                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                                <li>
+                                    <a href="/admin/create"
+                                        class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Register</a>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li>
+                        <a href="/admin/requests"
+                            class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
+                            Requests
+                        </a>
+                    </li>
+                @endcan
                 <li>
                     @can('admin-access')
                         <details class="relative group">
@@ -54,8 +77,6 @@
                                 <li>
                                     <a href="/books" class="block px-4 py-2 hover:bg-gray-100">List</a>
                                 </li>
-                                <li>
-                                    <a href="/admin/requests" class="block px-4 py-2 hover:bg-gray-100">Requests</a>
                                 <li>
                                     <a href="/books/export" class="block px-4 py-2 hover:bg-gray-100 rounded-b-md">Export
                                         Books</a>
@@ -129,15 +150,17 @@
                         <details>
                             <summary>{{Auth::user()->name}}</summary>
                             <ul class="bg-base-100 rounded-t-none p-2">
-                                <li><a class="text-[#006D77]" href="{{ route('profile.show') }}">Profile</a></li>
+                                <li><a class="text-[#006D77]" href="{{ route('profile.show') }}">Profile</a>
+                                </li>
+                                <li>
+                                    <a class="text-[#006D77]" href="/books/requests">Requests</a>
+                                </li>
                                 <form method='post' action="/logout">
                                     @csrf
                                     <li><button class="text-[#006D77]" type="submit">Logout</button></li>
                                 </form>
                             </ul>
-
                         </details>
-
                     </li>
                 @endauth
                 @guest

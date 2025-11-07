@@ -34,7 +34,7 @@ class AdminController extends Controller
             'password' => 'password',
             'role' => 'Admin',
         ]);
-        redirect('/books');
+        return redirect()->route('books.index');
     }
 
     public function requests(Request $request)

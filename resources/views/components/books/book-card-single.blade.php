@@ -1,8 +1,5 @@
 @props(['book'])
 <!-- Single Book Card with Image on Left and Information on Right (Responsive) -->
-@php
-    dump(Auth::user()->availableRequests)
- @endphp
 <div class="max-w-4xl mx-auto my-8 bg-[#EDF6F9] p-6 rounded-lg shadow-xl flex flex-col">
     <div class="flex flex-col lg:flex-row items-center lg:items-start flex-grow space-y-6 lg:space-y-0 lg:space-x-6">
         <!-- Book Cover (Image on the Left) -->
@@ -41,12 +38,13 @@
 
             <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-start pt-22 ">
                 <a href="/books" class="btn btn-info">Back to Books List</a>
-                @if ($book->current_quantity > 0 && Auth::user()->availableRequests > 0)
-                    <a href="/books/{{ $book->id }}/request" class="btn btn">Request</a>
-                @else
-                    <a href="/books/{{ $book->id }}/request" class="btn btn-disabled">Request</a>
-                @endif
-
+                @auth
+                    @if ($book->current_quantity > 0 && Auth::user()->availableRequests > 0)
+                        <a href="/books/{{ $book->id }}/request" class="btn btn">Request</a>
+                    @else
+                        <a href="/books/{{ $book->id }}/request" class="btn btn-disabled">Request</a>
+                    @endif
+                @endauth
                 @can('admin-access')
                     <a href="/books/{{ $book->id }}/edit" class="btn btn-active btn-warning">Edit</a>
                     <button form="delete-form" class="btn btn-active btn-error">Delete</button>
@@ -55,10 +53,88 @@
             </div>
         </div>
     </div>
+
+    @can('admin-access')
+        @if ($book->bookRequests->count() > 0)
+            <div class="mt-10 bg-[#EDF6F9] p-6 rounded-lg shadow-inner">
+                <h2 class="text-2xl font-bold text-[#006D77] mb-4">Book Requests</h2>
+
+                <!-- Active Requests -->
+                @php
+                    $activeRequests = $book->bookRequests->where('completed', false);
+                    $pastRequests = $book->bookRequests->where('completed', true);
+                @endphp
+
+                @if ($activeRequests->count() > 0)
+                    <div class="space-y-3 mb-6">
+                        <h3 class="text-lg font-semibold text-[#006D77]">Active Requests</h3>
+
+                        @foreach ($activeRequests as $req)
+                            @php
+                                $isLate = now()->gt($req->requestEndDate);
+                            @endphp
+
+                            <div @if ($isLate) class="p-4 rounded-md border border-red-400" @else
+                            class="p-4 rounded-md border  border-green-400" @endif>
+                                <div class="flex flex-col sm:flex-row sm:justify-between">
+                                    <div>
+                                        <a href="{{ Route('showBookRequest', $req) }}" class="font-semibold text-[#006D77]">
+                                            Request No. {{ $req->id }}
+                                        </a>
+                                        <p class="font-semibold text-[#006D77]">
+                                            Requested by: {{ $req->user->name }}
+                                        </p>
+                                        <p class="text-sm text-[#006D77]">
+                                            From {{ $req->requestDate }}
+                                            to {{ $req->requestEndDate }}
+                                        </p>
+                                    </div>
+
+                                    <div @if ($isLate) class="mt-2 sm:mt-0 text-sm font-medium test-red-500" @else
+                                    class="mt-2 sm:mt-0 text-sm font-medium text-green-700" @endif>
+
+                                        {{ $isLate ? 'Overdue' : 'Active' }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+
+                <!-- Past Requests -->
+                @if ($pastRequests->count() > 0)
+                    <div class="space-y-3">
+                        <h3 class="text-lg font-semibold text-[#006D77]">Completed Requests</h3>
+
+                        @foreach ($pastRequests as $request)
+                            <div class="p-4 rounded-md border border-gray-300 bg-gray-50">
+                                <div class="flex flex-col sm:flex-row sm:justify-between">
+                                    <div>
+                                        <p class="font-semibold text-[#006D77]">
+                                            Requested by: {{ $request->user->name }}
+                                        </p>
+                                        <p class="text-sm text-[#006D77]">
+                                            {{ $request->requestDate }}
+                                            {{ $request->returnedDate ?? 'Not returned' }}
+                                        </p>
+                                    </div>
+                                    <div class="mt-2 sm:mt-0 text-sm text-gray-600">
+                                        Completed
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        @endif
+    @endcan
 </div>
 
+
+
 <form method="POST" action="/books/{{ $book->id }}" class="hidden" id="delete-form"
-    onsubmit="return confirm('Delete this author?')">
+    onsubmit="return confirm('Delete this book?')">
     @csrf
     @method('DELETE')
 </form>

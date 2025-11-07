@@ -11,7 +11,7 @@
         <span class="block w-4 h-4 rounded-full {{ $availabilityColor }}" title="
             @if ($book->current_quantity === 0)
                 Currently Unavailable
-            @elseif ($book->current_quantity < ($book->total_quantity / 2))
+            @elseif ($book->current_quantity <= ($book->total_quantity / 2))
                 Low Volume Available
             @else
                 In Inventory

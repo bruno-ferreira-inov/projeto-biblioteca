@@ -59,8 +59,16 @@
             <p><strong>Publisher:</strong> {{ optional($book->publisher)->name ?? 'Unknown' }}</p>
             <p><strong>Bibliography:</strong> {{ $book->bibliography }}</p>
 
-            <img class="w-64 h-96 object-cover rounded-md" src="{{ asset('storage/' . $book->cover) }}"
-                alt="{{$book->title}}">
+            @php
+                $coverPath = storage_path('app/public/' . $book->cover);
+            @endphp
+
+            @if (file_exists($coverPath))
+                <img src="{{ $message->embed($coverPath) }}" class="flex justify-center" alt="{{ $book->title }}"
+                    style="width: 200px; border-radius: 8px;">
+            @else
+                <p>[Cover not available]</p>
+            @endif
         </div>
 
         <p>We'll notify you once the book is ready for pickup or if more information is needed.</p>

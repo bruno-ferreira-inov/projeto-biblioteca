@@ -1,6 +1,6 @@
 <x-layout>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 class="text-2xl font-bold text-[#006D77] mb-6">Book Requests Overview</h1>
+        <h1 class="text-2xl font-bold text-[#006D77] mb-6">{{Auth::user()->name}}'s Requests</h1>
 
         {{-- === Summary Counters === --}}
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -9,25 +9,20 @@
                 <p class="text-2xl font-bold text-[#006D77]">{{ $ongoingRequests->count() }}</p>
             </div>
             <div class="bg-white shadow-md border rounded-xl p-4 flex flex-col items-center">
-                <p class="text-sm text-gray-500">Requests (Last 30 Days)</p>
-                <p class="text-2xl font-bold text-[#006D77]">{{$recentCount}}</p>
+                <p class="text-sm text-gray-500">Requests Available</p>
+                <p class="text-2xl font-bold text-[#006D77]">{{ Auth::user()->availableRequests }}</p>
             </div>
             <div class="bg-white shadow-md border rounded-xl p-4 flex flex-col items-center">
-                <p class="text-sm text-gray-500">Fulfilled Today</p>
-                <p class="text-2xl font-bold text-[#006D77]">{{ $fulfilledToday }}</p>
+                <p class="text-sm text-gray-500">Lifetime Requests</p>
+                <p class="text-2xl font-bold text-[#006D77]">
+                    {{ $ongoingRequests->count() + $completedRequests->count() }}
+                </p>
             </div>
         </div>
 
-        {{-- === Search === --}}
-        <form method="GET" action="" class="flex justify-end  mt-4">
-            <input type="text" name="search" value="" placeholder="Search by Request ID"
-                class="border rounded-l-md px-3 py-2 focus:ring-2 focus:ring-[#006D77] outline-none">
-            <button type="submit" class="bg-[#006D77] text-white px-4 rounded-r-md hover:bg-[#00555d]">Search</button>
-        </form>
-
         {{-- Ongoing Requests --}}
         <div class="mb-10">
-            <h2 class="text-xl font-semibold text-[#006D77] mb-3">Ongoing Requests</h2>
+            <h2 class="text-xl font-semibold text-[#006D77] mb-3 mt-6">Ongoing Requests</h2>
             <div class="bg-white rounded-xl shadow-md border p-6">
                 <table class="w-full text-sm border-collapse">
                     <thead class="bg-[#006D77] text-white">
