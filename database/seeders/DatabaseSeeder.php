@@ -24,6 +24,6 @@ class DatabaseSeeder extends Seeder
             'role' => 'Admin',
         ]);
 
-        $this->call(BookSeeder::class);
+        // $this->call(BookSeeder::class);
     }
 }

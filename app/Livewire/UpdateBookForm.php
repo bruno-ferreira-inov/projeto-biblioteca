@@ -60,7 +60,11 @@ class UpdateBookForm extends Component
         $this->book = $book;
         $this->title = $book->title;
         $this->isbn = $book->isbn;
-        $this->price = $book->price;
+        if ($book->price) {
+            $this->price = $book->price;
+        } else {
+            $this->price = "";
+        }
         $this->publisher_id = $book->publisher_id;
         $this->bibliography = $book->bibliography;
         $this->cover = $book->coverPath;

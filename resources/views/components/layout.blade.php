@@ -20,36 +20,27 @@
 
     <div class="navbar bg-[#006D77] text-[#EDF6F9] shadow-sm">
         <div class="navbar-start">
-            <div class="dropdown">
-                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h8m-8 6h16" />
-                    </svg>
-                </div>
-                <ul tabindex="-1"
-                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow ">
-                    <li><a class="text-[#006D77]">Item 1</a></li>
-
-                </ul>
-            </div>
             <a href='/' class="btn btn-ghost text-xl">biblioteca</a>
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
                 @can('admin-access')
                     <li>
-                        <details class="relative group">
+                        <details class="">
                             <summary
                                 class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
                                 Admin
                             </summary>
                             <ul
-                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] z-50">
                                 <li>
-                                    <a href="/admin/create"
-                                        class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Register</a>
+                                    <a href="/admin/create" class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Register
+                                        Admin Account</a>
+                                </li>
+                                <li>
+                                    <a href="/books/import/search"
+                                        class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Import
+                                        Books to Catalog</a>
                                 </li>
                             </ul>
                         </details>
@@ -63,13 +54,13 @@
                 @endcan
                 <li>
                     @can('admin-access')
-                        <details class="relative group">
+                        <details>
                             <summary
-                                class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
+                                class="relative cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
                                 Books
                             </summary>
                             <ul
-                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] z-50">
                                 <li>
                                     <a href="/books/create"
                                         class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
@@ -92,13 +83,13 @@
                 </li>
                 <li>
                     @can('admin-access')
-                        <details class="relative group">
+                        <details>
                             <summary
                                 class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
                                 Authors
                             </summary>
                             <ul
-                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] z-50">
                                 <li>
                                     <a href="/authors/create"
                                         class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
@@ -117,13 +108,13 @@
                 </li>
                 <li>
                     @can('admin-access')
-                        <details class="relative group">
+                        <details>
                             <summary
                                 class="cursor-pointer text-white px-4 py-2 rounded-md hover:bg-[#005f67] focus:outline-none">
                                 Publishers
                             </summary>
                             <ul
-                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] opacity-0 group-open:opacity-100 group-open:translate-y-1 transition ease-in-out duration-150 z-50">
+                                class="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg text-[#006D77] z-50">
                                 <li>
                                     <a href="/publishers/create"
                                         class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Create</a>
@@ -145,7 +136,6 @@
         <div class="navbar-end">
             <ul class="menu menu-horizontal px-1">
                 @auth
-
                     <li>
                         <details>
                             <summary>{{Auth::user()->name}}</summary>

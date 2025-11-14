@@ -14,11 +14,12 @@ return new class extends Migration {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Publisher::class)->nullable();
+            $table->string('google_books_id')->default('');
             $table->string('title');
             $table->string('isbn');
             $table->string('bibliography');
             $table->string('cover');
-            $table->string('price');
+            $table->string('price')->nullable();
             $table->integer('total_quantity');
             $table->integer('current_quantity');
             $table->timestamps();

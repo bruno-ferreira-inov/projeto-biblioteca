@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\GoogleBooksController;
 use App\Http\Controllers\PublisherController;
 use App\Mail\BookRequestMade;
 use Illuminate\Support\Facades\Mail;
@@ -59,6 +60,14 @@ Route::get('/admin/{admin}', [AdminController::class, 'show'])
     ->can('admin-access');
 Route::delete('/admin/{id}', [AdminController::class, 'destroy'])
     ->can('admin-access');
+
+Route::get('/books/import/search', [GoogleBooksController::class, 'searchPage'])
+    ->can('admin-access');
+
+Route::get('books/import/result', [GoogleBooksController::class, 'search'])
+    ->can('admin-access');
+
+Route::post('/books/import/confirm', [GoogleBooksController::class, 'import']);
 
 //# -- Authors --
 Route::get('/authors', [AuthorController::class, 'index']);

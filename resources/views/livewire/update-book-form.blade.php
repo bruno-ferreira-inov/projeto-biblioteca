@@ -64,7 +64,8 @@
         <div wire:ignore>
             <fieldset class="fieldset space-y-2">
                 <legend class="fieldset-legend text-lg font-medium text-[#005f67]">Authors</legend>
-                <select wire:model="authors" multiple class="select select-bordered multi-author w-full h-32">
+                <select wire:model="authors" name="authors[]" multiple
+                    class="select select-bordered multi-author w-full h-32">
                     <option disabled>Authors...</option>
                     @foreach ($this->allAuthors as $a)
                         <option value="{{ $a->id }}">{{ $a->name }}</option>

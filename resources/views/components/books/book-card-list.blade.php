@@ -41,8 +41,8 @@
 
         <!-- Price and ISBN -->
         <div class="mt-auto flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
-            <span class="text-indigo-600 font-bold shrink-0">
-                {{ $book->price ? '$' . number_format($book->price, 2) : 'Free' }}
+            <span class="text-[#006D77] font-bold shrink-0">
+                {{ $book->price ? '€' . number_format($book->price, 2) : 'Free' }}
             </span>
             <span class="text-sm text-[#006D77] break-all">
                 ISBN: {{ $book->isbn }}

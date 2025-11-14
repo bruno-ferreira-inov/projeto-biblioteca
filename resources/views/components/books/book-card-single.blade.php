@@ -26,7 +26,7 @@
             <!-- Description -->
             <div class="mt-4">
                 <h3 class="text-xl font-semibold text-[#006d77]">Summary</h3>
-                <p class="text-[#006d77]">{{ $book->bibliography }}</p>
+                <p class="">{!! $book->bibliography !!}</p>
 
             </div>
             <div class="mt-4">
