@@ -37,7 +37,8 @@ Route::get('/books/requests/{req}', [BookController::class, 'showRequest'])->nam
 
 Route::post('/books/requests/{bookRequest}', [BookController::class, 'completeRequest'])->name('completeRequest');
 
-Route::get('/books/{book}', [BookController::class, 'show']);
+Route::get('/books/{book}', [BookController::class, 'show'])
+    ->name('books.show');
 Route::get('/books/{book}/edit', [BookController::class, 'edit'])
     ->can('admin-access');
 
@@ -50,14 +51,31 @@ Route::delete('/books/{id}', [BookController::class, 'destroy'])
 //# -- Admin --
 Route::get('/admin', [AdminController::class, 'index'])
     ->can('admin-access');
+
 Route::get('/admin/create', [AdminController::class, 'create'])
     ->can('admin-access');
+
+Route::get('/admin/reviews', [AdminController::class, 'reviewIndex'])
+    ->name('reviews.index')
+    ->can('admin-access');
+
+Route::post('/admin/reviews/{review}/approve', [AdminController::class, 'approveReview'])
+    ->name('reviews.approve')
+    ->can('admin-access');
+
+Route::post('/admin/reviews/{review}/reject', [AdminController::class, 'rejectReview'])
+    ->name('reviews.reject')
+    ->can('admin-access');
+
 Route::post('/admin', [AdminController::class, 'store'])
     ->can('admin-access');
+
 Route::get('/admin/requests', [AdminController::class, 'requests'])
     ->can('admin-access');
+
 Route::get('/admin/{admin}', [AdminController::class, 'show'])
     ->can('admin-access');
+
 Route::delete('/admin/{id}', [AdminController::class, 'destroy'])
     ->can('admin-access');
 

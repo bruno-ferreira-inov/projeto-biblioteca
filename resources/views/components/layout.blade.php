@@ -42,6 +42,10 @@
                                         class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Import
                                         Books to Catalog</a>
                                 </li>
+                                <li>
+                                    <a href="/admin/reviews" class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Review
+                                        Moderation</a>
+                                </li>
                             </ul>
                         </details>
                     </li>

@@ -1,14 +1,34 @@
-@props(['book'])
-<!-- Single Book Card with Image on Left and Information on Right (Responsive) -->
+@props(['book', 'relatedBooks'])
+<!-- Single Book Card with Image -->
 <div class="max-w-4xl mx-auto my-8 bg-[#EDF6F9] p-6 rounded-lg shadow-xl flex flex-col">
     <div class="flex flex-col lg:flex-row items-center lg:items-start flex-grow space-y-6 lg:space-y-0 lg:space-x-6">
-        <!-- Book Cover (Image on the Left) -->
-        <div class="flex justify-center lg:justify-start flex-shrink-0">
+        <!-- Book Cover -->
+        <div class="flex flex-col items-center space-y-4 flex-shrink-0">
             <img class="w-64 h-96 object-cover rounded-md" src="{{ asset('storage/' . $book->cover) }}"
                 alt="Book Cover">
+
+            <div class="flex flex-col gap-3 w-64">
+                <div>
+                    <a href="/books" class="btn btn-info w-full">Back to Books List</a>
+                </div>
+                <div>
+                    @auth
+                        @if ($book->current_quantity > 0 && Auth::user()->availableRequests > 0)
+                            <a href="/books/{{ $book->id }}/request" class="btn btn bg-slate-300 w-full">Request</a>
+                        @else
+                            @livewire('book-notification', [$book])
+                        @endif
+                    @endauth
+                </div>
+                @can('admin-access')
+                    <a href="/books/{{ $book->id }}/edit" class="btn btn-active btn-warning">Edit</a>
+                    <button form="delete-form" class="btn btn-active btn-error">Delete</button>
+                @endcan
+
+            </div>
         </div>
 
-        <!-- Book Details (Info on the Right) -->
+        <!-- Book Details -->
         <div class="flex-grow space-y-4">
             <h1 class="text-3xl font-bold text-[#006d77]">{{ $book->title }}</h1>
 
@@ -20,37 +40,79 @@
 
             <!-- Price -->
             <div class="text-[#006d77] font-semibold mt-4 text-2xl">
-                ${{ number_format($book->price, 2) }}
+                {{ number_format($book->price, 2) }}€
             </div>
 
             <!-- Description -->
-            <div class="mt-4">
+            <div x-data="{ expanded: false }" class="mt-4">
                 <h3 class="text-xl font-semibold text-[#006d77]">Summary</h3>
-                <p class="">{!! $book->bibliography !!}</p>
 
+                <!-- Collapsed Version -->
+                <div x-show="!expanded">
+                    {!! Str::limit($book->bibliography, 750) !!}
+                    @if (strlen($book->bibliography) > 750)
+                        <span class="text-[#006d77] underline cursor-pointer" @click="expanded = true">
+                            Read more...
+                        </span>
+                    @endif
+                </div>
+
+                <!-- Expanded Version -->
+                <div x-show="expanded" x-cloak>
+                    {!! $book->bibliography !!}
+                    <span class="text-[#006d77] underline cursor-pointer" @click="expanded = false">
+                        Read less
+                    </span>
+                </div>
             </div>
+
             <div class="mt-4">
                 <h4 class="text-l font-semibold text-[#006d77]">Available Copies</h4>
                 <p class="text-[#006d77]">{{ $book->current_quantity }}/{{ $book->total_quantity }}</p>
             </div>
+        </div>
+    </div>
 
-            <!-- Back Button -->
+    <div class="p-6 mt-4rounded-lg ">
+        <h2 class="text-2xl font-bold text-teal-700 mb-4">Reviews</h2>
 
-            <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-start pt-22 ">
-                <a href="/books" class="btn btn-info">Back to Books List</a>
-                @auth
-                    @if ($book->current_quantity > 0 && Auth::user()->availableRequests > 0)
-                        <a href="/books/{{ $book->id }}/request" class="btn btn">Request</a>
-                    @else
-                        <a href="/books/{{ $book->id }}/request" class="btn btn-disabled">Request</a>
-                    @endif
-                @endauth
+        @if ($book->reviews->count() === 0)
+            <p class="text-gray-600">No reviews yet. Be the first to leave one!</p>
+        @endif
+
+        @foreach ($book->reviews as $review)
+            @if ($review->approved)
+                <div class="p-4 mb-3 bg-white rounded-md border">
+                    <p class="font-semibold">{{ $review->user->name }}</p>
+                    <p class="text-sm text-gray-500">{{ $review->created_at->format('Y-m-d') }}</p>
+                    <p class="mt-2">{{ $review->review_body }}</p>
+                </div>
+            @else
                 @can('admin-access')
-                    <a href="/books/{{ $book->id }}/edit" class="btn btn-active btn-warning">Edit</a>
-                    <button form="delete-form" class="btn btn-active btn-error">Delete</button>
-                @endcan
+                    <div class="p-4 mb-3 bg-white rounded-md border">
+                        <p class="font-semibold">{{ $review->user->name }}</p>
+                        <p class="text-sm text-gray-500">{{ $review->created_at->format('Y-m-d') }}</p>
+                        <p class="mt-2">{{ $review->review_body }}</p>
 
-            </div>
+                        @if(!$review->approved)
+                            <p class="text-xs text-yellow-600 mt-1">(Awaiting approval)</p>
+                        @endif
+                    </div>
+                @endcan
+            @endif
+
+        @endforeach
+    </div>
+
+    <div class="mt-10">
+        <h2 class="text-xl font-semibold text-[#006d77] mb-4">You may also like</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            @foreach($relatedBooks as $rec)
+                <a href="/books/{{ $rec->id }}" class="block bg-[#edf6f9] p-4 rounded shadow hover:shadow-lg">
+                    <img src="{{ asset('storage/' . $rec->cover) }}" class="h-64 w-full object-cover rounded">
+                    <p class="mt-5 font-semibold text-[#006d77]">{{ $rec->title }}</p>
+                </a>
+            @endforeach
         </div>
     </div>
 

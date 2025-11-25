@@ -27,6 +27,9 @@
                     <p class="text-[#006D77] text-sm mb-1"><strong>Publisher:</strong>
                         {{ optional($bookRequest->book->publisher)->name ?? '—' }}
                     </p>
+                    @if ($bookRequest->user->id === auth()->id() && $bookRequest->completed)
+                        @livewire('create-book-review', [$bookRequest->book])
+                    @endif
                 </div>
             </div>
 

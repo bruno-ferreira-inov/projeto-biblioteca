@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exports\BooksExport;
+use App\Jobs\SendBookAvailabilityNotifications;
+use App\Mail\BookAvailableMail;
 use App\Mail\BookRequestMade;
 use App\Models\Book;
 use App\Models\Author;
@@ -16,7 +18,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
-use Psy\Command\WhereamiCommand;
 
 class BookController extends Controller
 {
@@ -118,7 +119,12 @@ class BookController extends Controller
     {
         $book = Book::with(['authors', 'bookRequests.user'])->findOrFail($book->id);
 
-        return view('books.show', ['book' => $book]);
+        $relatedBooks = $book->recommendedBooks(4);
+
+        return view('books.show', [
+            'book' => $book,
+            'relatedBooks' => $relatedBooks
+        ]);
     }
 
     /**
@@ -175,7 +181,9 @@ class BookController extends Controller
         // dd($book->authors);
         $book->authors()->sync($request->authors ?? []);
 
-        return view('books.show', ['book' => $book]);
+        $relatedBooks = $book->recommendedBooks(4);
+
+        return view('books.show', ['book' => $book, 'relatedBooks ' => $relatedBooks]);
     }
 
     /**
@@ -219,7 +227,9 @@ class BookController extends Controller
                 new BookRequestMade($bookrequest)
             );
 
-        return view('books.show', ['book' => $book]);
+        $relatedBooks = $book->recommendedBooks(4);
+
+        return view('books.show', ['book' => $book, 'relatedBooks' => $relatedBooks]);
     }
 
     public function showRequest($id)
@@ -246,6 +256,10 @@ class BookController extends Controller
 
         $bookRequest->book->increment('current_quantity');
         $bookRequest->user->increment('availableRequests');
+
+        if ($bookRequest->book->current_quantity > 0) {
+            SendBookAvailabilityNotifications::dispatch($bookRequest->book);
+        }
 
         return redirect('/admin/requests');
     }

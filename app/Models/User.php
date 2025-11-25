@@ -71,4 +71,11 @@ class User extends Authenticatable
     {
         return $this->role === 'Admin';
     }
+
+    public function notificationBooks()
+    {
+        return $this->belongsToMany(Book::class, 'book_user_notifications')
+            ->withPivot('notified')
+            ->withTimestamps();
+    }
 }
