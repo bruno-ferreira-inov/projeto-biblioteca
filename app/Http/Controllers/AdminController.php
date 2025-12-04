@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BookRequest;
 use App\Models\BookReview;
+use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\File;
@@ -101,6 +102,17 @@ class AdminController extends Controller
         $review->save();
 
         return redirect()->route('reviews.index')->with('success', 'Review Rejected');
+    }
+
+    public function ordersIndex()
+    {
+        $status = request('status', 'pending');
+
+        $orders = Order::where('status', $status)
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('orders.index', compact('orders'));
     }
     public function show()
     {

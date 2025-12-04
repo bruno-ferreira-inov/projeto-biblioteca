@@ -8,17 +8,18 @@
                 alt="Book Cover">
 
             <div class="flex flex-col gap-3 w-64">
-                <div>
-                    <a href="/books" class="btn btn-info w-full">Back to Books List</a>
-                </div>
+                <a href="/books" class="btn btn-info w-full">Back to Books List</a>
                 <div>
                     @auth
+                        @livewire('add-to-cart-button', [$book])
                         @if ($book->current_quantity > 0 && Auth::user()->availableRequests > 0)
                             <a href="/books/{{ $book->id }}/request" class="btn btn bg-slate-300 w-full">Request</a>
                         @else
                             @livewire('book-notification', [$book])
                         @endif
                     @endauth
+
+
                 </div>
                 @can('admin-access')
                     <a href="/books/{{ $book->id }}/edit" class="btn btn-active btn-warning">Edit</a>

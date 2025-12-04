@@ -46,6 +46,10 @@
                                     <a href="/admin/reviews" class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Review
                                         Moderation</a>
                                 </li>
+                                <li>
+                                    <a href="/admin/orders" class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">See All
+                                        Orders</a>
+                                </li>
                             </ul>
                         </details>
                     </li>
@@ -169,6 +173,9 @@
 
     <main class="">
         {{  $slot }}
+        @auth
+            @livewire('cart')
+        @endauth
     </main>
     @livewireScripts
 </body>

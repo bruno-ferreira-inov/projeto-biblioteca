@@ -209,6 +209,10 @@ class BookController extends Controller
         $user = $request->user();
         $book = Book::findOrFail($request->bookId);
 
+        if ($book->current_quantity <= 0) {
+            return redirect()->back()->with('error', 'Book is out of stock');
+        }
+
         $bookrequest = BookRequest::create([
             'book_id' => $book->id,
             'user_id' => $user->id,

@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\GoogleBooksController;
 use App\Http\Controllers\PublisherController;
 use App\Mail\BookRequestMade;
@@ -29,7 +31,7 @@ Route::get('/books/export/', [BookController::class, 'export'])
 
 Route::get('/books/{id}/request', [BookController::class, 'request']);
 
-Route::post('/books/{id}/request', [BookController::class, 'storeRequest']);
+Route::post('/books/{id}/request', [BookController::class, 'storeRequest'])->name('book.request.store');
 
 Route::get('/books/requests', [BookController::class, 'userRequests'])->name('user-requests');
 
@@ -48,6 +50,15 @@ Route::patch('/books/{id}', [BookController::class, 'update'])
 Route::delete('/books/{id}', [BookController::class, 'destroy'])
     ->can('admin-access');
 
+//# -- Cart --
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+
+Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
+Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
 //# -- Admin --
 Route::get('/admin', [AdminController::class, 'index'])
     ->can('admin-access');
@@ -65,6 +76,10 @@ Route::post('/admin/reviews/{review}/approve', [AdminController::class, 'approve
 
 Route::post('/admin/reviews/{review}/reject', [AdminController::class, 'rejectReview'])
     ->name('reviews.reject')
+    ->can('admin-access');
+
+Route::get('/admin/orders', [AdminController::class, 'ordersIndex'])
+    ->name('orders.index')
     ->can('admin-access');
 
 Route::post('/admin', [AdminController::class, 'store'])
