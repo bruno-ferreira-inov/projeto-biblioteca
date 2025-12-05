@@ -82,6 +82,10 @@ Route::get('/admin/orders', [AdminController::class, 'ordersIndex'])
     ->name('orders.index')
     ->can('admin-access');
 
+Route::get('/admin/logs', [AdminController::class, 'logsIndex'])
+    ->name('admin.logs')
+    ->can('admin-access');
+
 Route::post('/admin', [AdminController::class, 'store'])
     ->can('admin-access');
 

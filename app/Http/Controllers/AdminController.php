@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\BookRequest;
 use App\Models\BookReview;
 use App\Models\Order;
@@ -113,6 +114,20 @@ class AdminController extends Controller
             ->paginate(15);
 
         return view('orders.index', compact('orders'));
+    }
+
+    public function logsIndex(Request $request)
+    {
+        $logs = ActivityLog::with('user')
+            ->when($request->module, fn($q) => $q->where('module', $request->module))
+            ->when($request->action, fn($q) => $q->where('action', $request->action))
+            ->when($request->user_id, fn($q) => $q->where('user_id', $request->user_id))
+            ->latest()
+            ->paginate(20);
+
+        $modules = ActivityLog::select('module')->distinct()->pluck('module');
+
+        return view('admin.logs', compact('logs', 'modules'));
     }
     public function show()
     {

@@ -50,6 +50,10 @@
                                     <a href="/admin/orders" class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">See All
                                         Orders</a>
                                 </li>
+                                <li>
+                                    <a href="/admin/logs" class="block px-4 py-2 hover:bg-gray-100 rounded-t-md">Activity
+                                        Logs</a>
+                                </li>
                             </ul>
                         </details>
                     </li>

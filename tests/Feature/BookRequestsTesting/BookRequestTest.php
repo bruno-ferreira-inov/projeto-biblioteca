@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use function Pest\Laravel\actingAs;
 
+//php artisan test tests/Feature/BookRequestsTesting
+
 it('creates user and book and allows user to request book', function () {
     Mail::fake();
     $user = User::factory()->create([
